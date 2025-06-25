@@ -1,5 +1,6 @@
 import React, { useState } from "react"; // Import useState
 import { blogCategories } from "../assets/assets";
+import { motion } from "motion/react";
 
 const BlogList = () => {
   const [menu, setMenu] = useState("All"); // Correct useState syntax
@@ -18,7 +19,9 @@ const BlogList = () => {
             >
               {item}
               {menu === item && (
-                <div className="absolute left-0 right-0 top-0 h-7 -z-1 bg-primary rounded-full"></div>
+                <motion.div layoutId="underline"
+                transition={{type: "spring", stiffness: 500, damping: 30}}
+                 className="absolute left-0 right-0 top-0 h-7 -z-1 bg-primary rounded-full"></motion.div>
               )}
             </button>
           </div>
