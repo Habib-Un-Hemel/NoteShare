@@ -9,8 +9,7 @@ const Navbar = () => {
       <img
         onClick={() => navigate("/")}
         src={assets.logo}
-        a
-        lt="logo"
+        alt="logo"
         className="w-32 sm:w-44"
       ></img>
       <button
