@@ -47,20 +47,27 @@ const Blog = () => {
         <p className="text-primary py-4 font-medium">
           Published on {Moment(data.createdAt).format("MMMM Do YYYY")}
         </p>
-        <h1 className="text-2xl sm:text-5xl font-semibold max-2-2xl mx-auto text-gray-800">
+        {/* <h1 className="text-2xl sm:text-5xl font-semibold max-w-2xl mx-auto text-gray-800 text-center"> */}
+        <h1 className="text-2xl sm:text-5xl font-semibold max-w-2xl mx-auto text-gray-800 text-center">
           {data.title}
         </h1>
-        <h2 className="my-5 max-2-lg truncate mx-auto">{data.subTitle}</h2>
+        <h2 className="my-5 max-w-lg truncate mx-auto text-center">
+          {data.subTitle}
+        </h2>
         <p className="inline-block py-1 px-4 rounded-full mb-6 border text-sm border-primary/35 bg-primary/5 font-medium text-primary">
           Hemel
         </p>
       </div>
 
       {/*  */}
-      <div className="mx-5 max-2-5xl md:mx-auto my-10 mt-6">
+      <div className="mx-5 max-w-5xl md:mx-auto my-10 mt-6">
         <img src={data.image} alt="" className="rouned-3xl mb-5"></img>
-        <div
+        {/* <div
           className="rich-text max-2-3xl mx-auto"
+          dangerouslySetInnerHTML={{ __html: data.description }}
+        ></div> */}
+        <div
+          className="rich-text max-w-3xl mx-auto text-justify"
           dangerouslySetInnerHTML={{ __html: data.description }}
         ></div>
       </div>
