@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken";
 export const adminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log("adminLogin received email:", email);
+    console.log("adminLogin received password:", password);
 
     if (
       email !== process.env.ADMIN_EMAIL ||
