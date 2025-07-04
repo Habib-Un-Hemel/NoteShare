@@ -74,13 +74,14 @@ export const deleteCommentById = async (req, res) => {
   try {
     const { id } = req.body; // Assuming the comment ID is sent in the request body
     // Assuming Comment is your Mongoose model for comments
-    const deletedComment = await Comment.findByIdAndDelete(id);
+    // const deletedComment = await Comment.findByIdAndDelete(id);
+    await Comment.findByIdAndDelete(id);
 
-    if (!deletedComment) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Comment not found" });
-    }
+    // if (!deletedComment) {
+    //   return res
+    //     .status(404)
+    //     .json({ success: false, message: "Comment not found" });
+    // }
 
     res.json({ success: true, message: "Comment deleted successfully" });
   } catch (error) {
@@ -92,17 +93,18 @@ export const approveCommentById = async (req, res) => {
   try {
     const { id } = req.body; // Assuming the comment ID is sent in the request body
     // Assuming Comment is your Mongoose model for comments
-    const updatedComment = await Comment.findByIdAndUpdate(
+    // const updatedComment = await Comment.findByIdAndUpdate(
+      await Comment.findByIdAndUpdate(
       id,
       { isApproved: true },
-      { new: true }
+      // { new: true }
     );
 
-    if (!updatedComment) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Comment not found" });
-    }
+    // if (!updatedComment) {
+    //   return res
+    //     .status(404)
+    //     .json({ success: false, message: "Comment not found" });
+    // }
 
     res.json({ success: true, message: "Comment approved successfully" });
   } catch (error) {

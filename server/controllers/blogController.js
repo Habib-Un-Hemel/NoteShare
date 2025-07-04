@@ -120,7 +120,7 @@ export const addComment = async (req, res) => {
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
-};
+};    
 
 export const getBlogComments = async (req, res) => {
   try {
