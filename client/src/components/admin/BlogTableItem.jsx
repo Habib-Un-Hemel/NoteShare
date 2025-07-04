@@ -16,7 +16,7 @@ const BlogTableItem = ({ blog, index }) => {
     );
     if (!confirm) return;
     try {
-      const { data } = await axios.delete("/api/admin/delete", {
+      const { data } = await axios.delete("/api/blog/delete", {
         id: blog._id,
       });
       if (data.success) {
