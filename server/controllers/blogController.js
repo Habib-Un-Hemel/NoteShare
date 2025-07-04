@@ -1,6 +1,8 @@
 import fs from "fs";
 import imagekit from "../configs/imageKit.js";
 import Blog from "../models/Blog.js";
+import Comment from "../models/Comment.js";
+
 export const addBlog = async (req, res) => {
   try {
     const { title, subTitle, description, category, isPublished } = JSON.parse(
@@ -99,12 +101,6 @@ export const togglePublish = async (req, res) => {
   try {
     const { id } = req.body; // Assuming the blog ID is sent in the request body
     const blog = await Blog.findById(id);
-
-    // if (!blog) {
-    //   return res
-    //     .status(404)
-    //     .json({ success: false, message: "Blog not found" });
-    // }
 
     blog.isPublished = !blog.isPublished; // Toggle the isPublished status
     await blog.save(); // Save the updated blog

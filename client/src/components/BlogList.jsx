@@ -18,7 +18,7 @@ const BlogList = () => {
         blog.title.toLowerCase().includes(input.toLowerCase()) ||
         blog.category.toLowerCase().includes(input.toLowerCase())
     );
-  };
+  }; 
 
   return (
     <div className="container mx-auto px-4">

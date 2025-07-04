@@ -1,38 +1,78 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { blog_data, comments_data } from "../assets/assets";
+import { blog_data, comments_data, assets } from "../assets/assets";
 import Navbar from "../components/Navbar";
-import { assets } from "../assets/assets";
+
 import Moment from "moment"; // Import Moment.js for date formatting
 import Footer from "../components/Footer";
+import { useAppContext } from "../context/AppContext";
+import toast from "react-hot-toast";
 
 const Blog = () => {
   const { id } = useParams();
+
+  const { axios } = useAppContext();
+
   const [data, setData] = useState(null);
   const [comments, setComments] = useState([]);
-
   const [name, setName] = useState("");
   const [content, setContent] = useState("");
 
   const fetchBlogData = async () => {
-    const data = blog_data.find((item) => item._id === id);
-    setData(data);
-  };
-
-  const addComment = async (e) => {
-    // setComments(comments_data);
-    e.preventDefault();
+    // const data = blog_data.find((item) => item._id === id);
+    // setData(data);
+    try {
+      const { data } = await axios.get(`/api/blog/${id}`);
+      data.success ? setData(data.blog) : toast.error(data.message);
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   const fetchComments = async () => {
-    setComments(comments_data);
+    try {
+      const { data } = await axios.post("/api/blog/comments", { blogId: id });
+      if (data.success) {
+        setComments(data.comments);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
-
   //call the function to display the blog data
   useEffect(() => {
     fetchComments();
     fetchBlogData();
   }, []);
+
+
+  // Modify the addComment function to refresh comments after adding
+  const addComment = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post("/api/blog/add-comment", {
+        blog: id,
+        name,
+        content,
+      });
+      if (data.success) {
+        toast.success(data.message);
+        setName("");
+        setContent("");
+        fetchComments(); // Refresh comments after successful addition
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  // const fetchComments = async () => {
+  //   setComments(comments_data);
+  // };
 
   return data ? (
     <div className="relative ">
@@ -98,11 +138,13 @@ const Blog = () => {
         {/* comment box */}
 
         {/* Add Comment Section */}
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-3xl mx-auto p-4">
+          {" "}
+          {/* Add padding */}
           <p className="font-semibold mb-4">Add your comment</p>
           <form
             onSubmit={addComment}
-            className="flex flex-col items-start gap-4 max-w-lg"
+            className="flex flex-col items-start gap-4 max-w-lg bg-white p-4 rounded-lg shadow-sm" // Add background and shadow
           >
             <input
               onChange={(e) => setName(e.target.value)}
