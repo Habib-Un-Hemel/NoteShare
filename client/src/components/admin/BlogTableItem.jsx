@@ -1,10 +1,9 @@
 import React from "react";
 import { assets } from "../../assets/assets";
-import { NavLink } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 
-const BlogTableItem = ({ blog, index }) => {
+const BlogTableItem = ({ blog, fetchBlogs, index }) => {
   const { title, createdAt } = blog;
   const BlogDate = new Date(createdAt);
 
@@ -16,7 +15,7 @@ const BlogTableItem = ({ blog, index }) => {
     );
     if (!confirm) return;
     try {
-      const { data } = await axios.delete("/api/blog/delete", {
+      const { data } = await axios.post("/api/blog/delete", {
         id: blog._id,
       });
       if (data.success) {
@@ -40,6 +39,7 @@ const BlogTableItem = ({ blog, index }) => {
       });
       if (data.success) {
         toast.success(data.message);
+        await fetchBlogs(); 
       } else {
         toast.error(data.message);
       }

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { assets, dashboard_data } from "../../assets/assets";
 import BlogTableItem from "../../components/admin/BlogTableItem";
+import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
 const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState({
@@ -10,8 +12,17 @@ const Dashboard = () => {
     recentBlogs: [],
   });
 
+  const { axios } = useAppContext(); // Assuming you have a context for axios
+
   const fetchDashboardData = async () => {
-    setDashboardData(dashboard_data);
+    try {
+      const { data } = await axios.get("/api/admin/dashboard");
+      data.success ? setDashboardData(data.dashboardData) : toast.error(data.message);
+    } catch (error) {
+      toast.error(
+        "An error occurred while fetching dashboard data: " + error.message
+      );
+    }
   };
 
   useEffect(() => {
@@ -33,10 +44,10 @@ const Dashboard = () => {
         <div className="flex items-center gap-4 bg-white p-4 min-2-58 rounded shadow cursor-pointer hover:scale-105 transition-all">
           <img src={assets.dashboard_icon_2} alt="" />
           <div>
-          <p className="text-xl font-semibold text-gray-600">
-            {dashboardData.comments}
-          </p>
-          <p className="text-gray-400 font-light">Comments</p>
+            <p className="text-xl font-semibold text-gray-600">
+              {dashboardData.comments}
+            </p>
+            <p className="text-gray-400 font-light">Comments</p>
           </div>
         </div>
         {/*  */}
