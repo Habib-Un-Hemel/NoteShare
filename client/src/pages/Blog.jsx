@@ -41,12 +41,6 @@ const Blog = () => {
       toast.error(error.message);
     }
   };
-  //call the function to display the blog data
-  useEffect(() => {
-    fetchComments();
-    fetchBlogData();
-  }, []);
-
 
   // Modify the addComment function to refresh comments after adding
   const addComment = async (e) => {
@@ -61,7 +55,6 @@ const Blog = () => {
         toast.success(data.message);
         setName("");
         setContent("");
-        fetchComments(); // Refresh comments after successful addition
       } else {
         toast.error(data.message);
       }
@@ -69,6 +62,11 @@ const Blog = () => {
       toast.error(error.message);
     }
   };
+  //call the function to display the blog data
+  useEffect(() => {
+    fetchComments();
+    fetchBlogData();
+  }, []);
 
   // const fetchComments = async () => {
   //   setComments(comments_data);

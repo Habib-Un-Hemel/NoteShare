@@ -2,11 +2,16 @@ import React, { useEffect, useRef, useState } from "react";
 import { assets } from "../../assets/assets"; // Assuming this is your asset import path
 import Quill from "quill"; // Import Quill for rich text editing
 import "quill/dist/quill.snow.css"; // Import Quill's snow theme CSS
+import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
 const AddBlog = () => {
   // Refs to hold the editor's container and the Quill instance
   const editorRef = useRef(null);
   const quillRef = useRef(null);
+
+  const { axios } = useAppContext(); // Assuming you have a context for axios
+  const [isAdding, setIsAdding] = useState(false);
 
   // State management remains the same
   const [image, setImage] = useState(false);
@@ -57,17 +62,39 @@ const AddBlog = () => {
     };
   }, []);
 
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
-    const blogData = {
-      title,
-      subTitle,
-      description, // The description state now holds the HTML from Quill
-      category,
-      isPublished,
-      image,
-    };
-    console.log("Submitting Blog Data:", blogData);
+  const onSubmitHandler = async (e) => {
+    try {
+      e.preventDefault();
+      setIsAdding(true);
+
+      const blog = {
+        title,
+        subTitle,
+        description: quillRef.current.root.innerHTML,
+        category,
+        isPublished,
+      };
+
+      const formData = new FormData();
+      formData.append("blog", JSON.stringify(blog));
+      formData.append("image", image);
+
+      const { data } = await axios.post("/api/blog/add", formData);
+
+      if (data.success) {
+        toast.success(data.message);
+        setImage(false);
+        setTitle("");
+        quillRef.current.root.innerHTML = "";
+        setCategory("Startup");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error("An error occurred: " + error.message); 
+    } finally {
+      setIsAdding(false); 
+    }
   };
 
   // Modified to interact with the Quill instance
@@ -168,10 +195,11 @@ const AddBlog = () => {
           </label>
         </div>
         <button
+          disabled={isAdding}
           type="submit"
           className="mt-8 bg-primary text-white py-2 px-8 rounded cursor-pointer"
         >
-          Add Blog
+          {isAdding ? "Adding..." : "Add Blog"}
         </button>
       </div>
     </form>

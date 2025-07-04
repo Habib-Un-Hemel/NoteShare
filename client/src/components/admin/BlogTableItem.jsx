@@ -1,10 +1,54 @@
 import React from "react";
 import { assets } from "../../assets/assets";
 import { NavLink } from "react-router-dom";
+import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
 const BlogTableItem = ({ blog, index }) => {
   const { title, createdAt } = blog;
   const BlogDate = new Date(createdAt);
+
+  const { axios } = useAppContext();
+
+  const deleteBlog = async () => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this blog? This action cannot be undone."
+    );
+    if (!confirm) return;
+    try {
+      const { data } = await axios.delete("/api/admin/delete", {
+        id: blog._id,
+      });
+      if (data.success) {
+        toast.success("Blog deleted successfully");
+        // eslint-disable-next-line no-undef
+        await fetchBlogs(); // Assuming fetchBlogs is a function to refresh the blog list
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(
+        "An error occurred while deleting the blog: " + error.message
+      );
+    }
+  };
+
+  const togglePublish = async () => {
+    try {
+      const { data } = await axios.post("/api/blog/toggle-publish", {
+        id: blog._id,
+      });
+      if (data.success) {
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(
+        "An error occurred while toggling publish status: " + error.message
+      );
+    }
+  };
 
   return (
     <tr className="border-y border-gray-300">
@@ -21,13 +65,17 @@ const BlogTableItem = ({ blog, index }) => {
         </p>
       </td>
       <td className="px-2 py-4 flex text-xs gap-3">
-        <button className="border px-2 py-0.5 mt-1 rounded cursor-pointer">
+        <button
+          onClick={togglePublish}
+          className="border px-2 py-0.5 mt-1 rounded cursor-pointer"
+        >
           {blog.isPublished ? "Unpublish" : "Publish"}
         </button>
         <img
           src={assets.cross_icon}
           className="w-8 hover:scale-110 transition-all cursor-pointer"
           alt=""
+          onClick={deleteBlog}
         />
       </td>
     </tr>

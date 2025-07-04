@@ -1,6 +1,6 @@
 import React from "react";
 import { useAppContext } from "../../context/AppContext";
-import axios from "axios";
+// import axios from "axios";  
 import toast from "react-hot-toast";
 
 const Login = () => {
@@ -21,8 +21,7 @@ const Login = () => {
         localStorage.setItem("token", data.token);
         axios.defaults.headers.common["Authorization"] = data.token;
         window.location.href = "/admin";
-      }
-      else {
+      } else {
         toast.error(data.message);
       }
     } catch (error) {
