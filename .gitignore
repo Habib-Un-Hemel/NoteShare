@@ -1,4 +1,7 @@
 /node_modules
+
+
+#secret
 .env
 .env.local
 .env.*.local
