@@ -1,12 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { blog_data } from "../../assets/assets";
+// import { blog_data } from "../../assets/assets";
 import BlogTableItem from "../../components/admin/BlogTableItem";
+import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
 const ListBlog = () => {
   const [blogs, setBlogs] = useState([]);
+  const { axios } = useAppContext(); // Assuming you have a context for axios
 
   const fetchBlogs = async () => {
-    setBlogs(blog_data);
+    try {
+      const { data } = await axios.get("/api/admin/blogs");
+      if (data.success) {
+        setBlogs(data.blogs);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error("An error occurred while fetching blogs: " + error.message);
+    }
   };
 
   useEffect(() => {
@@ -15,7 +27,6 @@ const ListBlog = () => {
 
   return (
     <div className="flex-1 pt-5 px-5 sm:pt-12 sm:pl-16 bg-blue-50/50">
-
       <h1>All blogs</h1>
 
       <div className="relative h-4/5 mt-5 max-w-4xl overflow-x-auto shadow rounded-lg scrollbar-hide bg-white">

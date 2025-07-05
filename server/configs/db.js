@@ -5,9 +5,13 @@ const connectDB = async () => {
     mongoose.connection.on("connected", () =>
       console.log("MongoDB connection established successfully.")
     );
-    await mongoose.connect(`${process.env.MONGODB_URI}/NoteShare`);
+    // Use the full connection string from environment variable without appending database name
+    await mongoose.connect(process.env.MONGODB_URI);
   } catch (error) {
-    console.error(`Error: ${error.message}`);
+    
+    console.error("Error connecting to MongoDB:", error);
   }
 };
 export default connectDB;
+
+ 

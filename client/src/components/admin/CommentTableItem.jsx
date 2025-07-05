@@ -1,12 +1,52 @@
 import React from "react";
-import { assets } from "../../assets/assets"; // Assuming assets are exported from this path
+import { assets } from "../../assets/assets";
+import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
 const CommentTableItem = ({ comment, fetchComments }) => {
-  // Destructuring properties from the comment object
   const { blog, createdAt, _id } = comment;
   const BlogDate = new Date(createdAt);
 
-  // Placeholder function for approving a comment
+  const { axios } = useAppContext();
+
+  const approveComment = async () => {
+    try {
+      const { data } = await axios.post("/api/admin/approve-comment", {
+        id: _id,
+      });
+      if (data.success) {
+        toast.success(data.message);
+
+        fetchComments();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+  const deleteComment = async () => {
+    try {
+      const confirm = window.confirm(
+        "Are you sure you want to delete this comment?"
+      );
+      if (!confirm) return;
+
+      const { data } = await axios.post("/api/admin/delete-comment", {
+        id: _id,
+      });
+      if (data.success) {
+        toast.success(data.message);
+
+        fetchComments();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   const handleApprove = async () => {
     // Here you would typically make an API call to update the comment status
     // await axios.post('/api/comments/approve', { id: _id });
@@ -45,7 +85,7 @@ const CommentTableItem = ({ comment, fetchComments }) => {
           {!comment.isApproved ? (
             // Show a clickable checkmark if not approved
             <img
-              onClick={handleApprove}
+              onClick={approveComment }
               src={assets.tick_icon}
               className="w-5 hover:scale-110 transition-all cursor-pointer"
               alt="Approve"
@@ -57,7 +97,7 @@ const CommentTableItem = ({ comment, fetchComments }) => {
             </p>
           )}
           <img
-            onClick={handleDelete}
+            onClick={deleteComment}
             src={assets.bin_icon}
             alt="Delete"
             className="w-5 hover:scale-110 transition-all cursor-pointer"

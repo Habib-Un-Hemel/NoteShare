@@ -1,38 +1,85 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { blog_data, comments_data } from "../assets/assets";
+import { assets, blog_data, comments_data } from "../assets/assets";
 import Navbar from "../components/Navbar";
-import { assets } from "../assets/assets";
+
 import Moment from "moment"; // Import Moment.js for date formatting
 import Footer from "../components/Footer";
+import { useAppContext } from "../context/AppContext";
+import toast from "react-hot-toast";
 
 const Blog = () => {
   const { id } = useParams();
+
+  const { axios } = useAppContext();
+
   const [data, setData] = useState(null);
   const [comments, setComments] = useState([]);
-
   const [name, setName] = useState("");
   const [content, setContent] = useState("");
 
   const fetchBlogData = async () => {
-    const data = blog_data.find((item) => item._id === id);
-    setData(data);
-  };
-
-  const addComment = async (e) => {
-    // setComments(comments_data);
-    e.preventDefault();
+    // const data = blog_data.find((item) => item._id === id);
+    // setData(data);
+    try {
+      const { data } = await axios.get(`/api/blog/${id}`);
+      console.log("Fetched Blog Data:", data); // <- Add this
+      data.success ? setData(data.blog) : toast.error(data.message);
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   const fetchComments = async () => {
-    setComments(comments_data);
+    try {
+      const { data } = await axios.post("/api/blog/comments", { blogId: id });
+      console.log("Fetched id:", id); // <- Add this
+      console.log("Fetched Comments:", data.comments); // <- Add this
+      if (data.success) {
+        console.log("Fetched Comments:", data.comments); // <- Add this
+        setComments(data.comments);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
+  // const fetchComments = async () => {
+  //   setComments(comments_data);
+  // };
+
+  // Modify the addComment function to refresh comments after adding
+  const addComment = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post("/api/blog/add-comment", {
+        blog: id,
+        name,
+        content,
+      });
+      if (data.success) {
+        toast.success(data.message);
+        setName("");
+        setContent("");
+        fetchComments(); // Refresh comments after adding a new one
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   //call the function to display the blog data
   useEffect(() => {
-    fetchComments();
     fetchBlogData();
+    fetchComments();
   }, []);
+
+  // const fetchComments = async () => {
+  //   setComments(comments_data);
+  // };
 
   return data ? (
     <div className="relative ">
@@ -72,18 +119,24 @@ const Blog = () => {
         ></div>
       </div>
 
-      {/* comment */}
+      {/* comment section */}
       <div className="mt-14 mb-10 max-w-3xl mx-auto">
         <p className="font-semibold mb-4">Comments({comments.length})</p>
 
         <div className="flex flex-col gap-4">
+          {/* Map through comments and display them */}
           {comments.map((item, index) => (
             <div
               key={index}
-              className="relative bg-primary/2 border border-primary/5 max-2-xl rounded text-gray-600"
+              className="relative bg-primary/2 border border-primary/5 max-w-2xl rounded text-gray-600"
             >
               <div className="flex items-center gap-2 mb-2">
-                <img src={assets.user_icon} alt="" className="w-6" />
+                <img
+                  src={assets.user_icon}
+                  alt="User Icon"
+                  className="w-6 h-6"
+                  style={{ display: "inline-block" }}
+                />
 
                 <p className="font-medium">{item.name}</p>
               </div>
@@ -98,13 +151,23 @@ const Blog = () => {
         {/* comment box */}
 
         {/* Add Comment Section */}
-        <div className="max-w-3xl mx-auto">
-          <p className="font-semibold mb-4">Add your comment</p>
+        <div className="max-w-3xl mx-auto p-4">
+          {" "}
+          {/* Add padding */}
+          <p className="font-semibold mb-4 flex items-center gap-2">
+            <img
+              src={assets.comment_icon}
+              alt="Comment Icon"
+              className="w-5 h-5 inline-block"
+            />
+            Add your comment
+          </p>
           <form
             onSubmit={addComment}
-            className="flex flex-col items-start gap-4 max-w-lg"
+            className="flex flex-col items-start gap-4 max-w-lg bg-white p-4 rounded-lg shadow-sm" // Add background and shadow
           >
             <input
+              ad
               onChange={(e) => setName(e.target.value)}
               value={name}
               type="text"
