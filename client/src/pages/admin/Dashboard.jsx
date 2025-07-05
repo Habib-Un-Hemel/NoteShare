@@ -17,7 +17,9 @@ const Dashboard = () => {
   const fetchDashboardData = async () => {
     try {
       const { data } = await axios.get("/api/admin/dashboard");
-      data.success ? setDashboardData(data.dashboardData) : toast.error(data.message);
+      data.success
+        ? setDashboardData(data.dashboardData)
+        : toast.error(data.message);
     } catch (error) {
       toast.error(
         "An error occurred while fetching dashboard data: " + error.message

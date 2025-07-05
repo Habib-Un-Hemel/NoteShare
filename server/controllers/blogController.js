@@ -124,9 +124,7 @@ export const addComment = async (req, res) => {
 
 export const getBlogComments = async (req, res) => {
   try {
-    const { blogId } = req.params; // Assuming blogId comes from URL parameters
-    // Assuming Comment is your Mongoose model for comments
-    // Find comments for a specific blog and populate the blog field if needed
+    const { blogId } = req.body; 
     const comments = await Comment.find({
       blog: blogId,
       isApproved: true,
