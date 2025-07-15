@@ -169,15 +169,15 @@ const Header = () => {
             <div className="text-gray-600 text-sm">Courses</div>
           </div>
           <div className="text-center p-4 rounded-lg bg-white shadow-sm">
-            <div className="text-3xl font-bold text-[#FF8C42]">1,200+</div>
+            <div className="text-3xl font-bold text-[#FF8C42]">200+</div>
             <div className="text-gray-600 text-sm">Students</div>
           </div>
           <div className="text-center p-4 rounded-lg bg-white shadow-sm">
-            <div className="text-3xl font-bold text-[#36B37E]">80+</div>
+            <div className="text-3xl font-bold text-[#36B37E]">2+</div>
             <div className="text-gray-600 text-sm">Faculty</div>
           </div>
           <div className="text-center p-4 rounded-lg bg-white shadow-sm">
-            <div className="text-3xl font-bold text-purple-600">5,000+</div>
+            <div className="text-3xl font-bold text-purple-600">300+</div>
             <div className="text-gray-600 text-sm">Resources</div>
           </div>
         </div>

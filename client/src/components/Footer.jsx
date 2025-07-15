@@ -141,7 +141,7 @@ const Footer = () => {
           <div className="mb-4 md:mb-0">
             <p className="text-sm text-gray-500">
               &copy; {new Date().getFullYear()} Academic Hub. All rights
-              reserved.
+              reserved | Made by HEMEL
             </p>
           </div>
 

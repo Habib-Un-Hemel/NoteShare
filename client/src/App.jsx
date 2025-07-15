@@ -24,7 +24,6 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/notes" element={<Notes />} />
-        import questionTypes from "./pages/questionTypes";
         <Route path="/questions" element={<Questions />} />
         <Route path="/videos" element={<Videos />} />
         <Route path="/notes/:id" element={<NoteDetail />} />
