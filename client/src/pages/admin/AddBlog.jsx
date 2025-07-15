@@ -208,7 +208,7 @@ const AddBlog = () => {
         <button 
           disabled={isAdding} 
           type='submit' 
-          className='mt-8 w-40 h-10 bg-primary text-white rounded cursor-pointer text-sm disabled:opacity-50'
+          className='mt-8 w-40 h-10 bg-blue-800 text-white rounded cursor-pointer text-sm disabled:opacity-50'
         >
           {isAdding ? 'Adding...' : 'Add Blog'}
         </button>

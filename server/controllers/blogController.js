@@ -140,7 +140,8 @@ export const generateContent = async (req, res) => {
   try {
     const { prompt } = req.body;
     const content = await main(
-      prompt + "Generate a blog content for this topic in simple text formate"
+      prompt +
+        "paraphase the writting and structure it in a blog format, the marks distribution in a good manner, then what should be focused on, and what should be avoided."
     );
     res.json({ success: true, content });
   } catch (error) {

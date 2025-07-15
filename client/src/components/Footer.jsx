@@ -83,7 +83,7 @@ const Footer = () => {
                 <div className="text-lg font-bold text-[#1D2B4C]">
                   NoteShare
                 </div>
-
+                
               </div>
             </div>
             <p className="text-gray-600 mb-6 max-w-sm">
