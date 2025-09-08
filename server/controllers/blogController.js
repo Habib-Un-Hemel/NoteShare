@@ -10,7 +10,7 @@ export const addBlog = async (req, res) => {
       req.body.blog
     );
     const imageFile = req.file;
-
+   
     //checking all fields are present or not
     if (!title || !description || !category || !imageFile) {
       return res.json({ success: false, message: "missing required field" });

@@ -13,7 +13,7 @@ const Home = () => {
       <Header></Header>
       <BlogList></BlogList>
 
-      <Newsletter></Newsletter>
+      {/* <Newsletter></Newsletter> */}
       <ContributorsSection></ContributorsSection>
       <Footer></Footer>
     </>
