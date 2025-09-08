@@ -4,6 +4,10 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { coursesData } from "../data/coursesData";
 
+// Google Drive folder URL
+const DRIVE_FOLDER_URL =
+  "https://drive.google.com/drive/folders/12GB4XRjQPCmZYocY2DHqKd5VE9bvP835?usp=sharing";
+
 const NotesDetail = () => {
   const { id } = useParams();
   const [course, setCourse] = useState(null);
@@ -19,6 +23,12 @@ const NotesDetail = () => {
       setLoading(false);
     }, 500);
   }, [id]);
+
+  // Handle download click - open Google Drive folder
+  const handleDownload = (e) => {
+    e.preventDefault();
+    window.open(DRIVE_FOLDER_URL, "_blank");
+  };
 
   if (loading) {
     return (
@@ -97,22 +107,18 @@ const NotesDetail = () => {
     }
   };
 
-  // Generate some mock note files
-  const generateMockFiles = (count) => {
-    return Array(count)
-      .fill()
-      .map((_, index) => ({
-        id: `file-${index}`,
-        name: `${course.title.split(":")[0]}_Note_${index + 1}.pdf`,
-        size: `${Math.floor(Math.random() * 10) + 1} MB`,
-        type: Math.random() > 0.3 ? "PDF" : "DOCX",
-        date: new Date(
-          Date.now() - Math.random() * 10000000000
-        ).toLocaleDateString(),
-      }));
-  };
-
-  const mockFiles = generateMockFiles(course.files || 5);
+  // Generate mock note files
+  const mockFiles = Array(course.files || 5)
+    .fill()
+    .map((_, index) => ({
+      id: `file-${index}`,
+      name: `${course.title.split(":")[0]}_Note_${index + 1}.pdf`,
+      size: `${Math.floor(Math.random() * 10) + 1} MB`,
+      type: Math.random() > 0.3 ? "PDF" : "DOCX",
+      date: new Date(
+        Date.now() - Math.random() * 10000000000
+      ).toLocaleDateString(),
+    }));
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -149,14 +155,18 @@ const NotesDetail = () => {
           </h1>
 
           <div className="flex flex-wrap gap-2 mb-6">
-            <span className={`badge ${getComplexityColor(course.complexity)}`}>
+            <span
+              className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${getComplexityColor(
+                course.complexity
+              )}`}
+            >
               {course.complexity}
             </span>
-            <span className="badge bg-blue-100 text-blue-800">
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
               {course.resources} Resources
             </span>
             {course.importance && (
-              <span className="badge bg-purple-100 text-purple-800">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
                 {course.importance}
               </span>
             )}
@@ -273,7 +283,8 @@ const NotesDetail = () => {
                         <td className="px-6 py-4 whitespace-nowrap">
                           <a
                             href="#"
-                            className="text-[#2A4A9C] hover:text-[#1D2B4C] inline-flex items-center text-sm"
+                            onClick={handleDownload}
+                            className="text-[#2A4A9C] hover:text-[#1D2B4C] inline-flex items-center text-sm cursor-pointer"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -296,119 +307,6 @@ const NotesDetail = () => {
                     ))}
                   </tbody>
                 </table>
-              </div>
-            </div>
-          </div>
-
-          {/* Additional Resources Section */}
-          <div className="bg-white rounded-xl shadow-md overflow-hidden">
-            <div className="p-6">
-              <h2 className="text-xl font-bold text-[#1D2B4C] mb-4 flex items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 mr-2 text-[#2A4A9C]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                Additional Resources
-              </h2>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="border border-gray-200 rounded-lg p-4 hover:border-[#2A4A9C] transition-colors">
-                  <h3 className="font-medium text-gray-800 mb-2">
-                    Video Tutorials
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-3">
-                    Watch complementary video explanations for this course.
-                  </p>
-                  <a
-                    href="#"
-                    className="text-[#2A4A9C] text-sm hover:underline inline-flex items-center"
-                  >
-                    View Videos
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 ml-1"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M14 5l7 7m0 0l-7 7m7-7H3"
-                      />
-                    </svg>
-                  </a>
-                </div>
-
-                <div className="border border-gray-200 rounded-lg p-4 hover:border-[#2A4A9C] transition-colors">
-                  <h3 className="font-medium text-gray-800 mb-2">
-                    Practice Problems
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-3">
-                    Test your understanding with practice problems and
-                    exercises.
-                  </p>
-                  <a
-                    href="#"
-                    className="text-[#2A4A9C] text-sm hover:underline inline-flex items-center"
-                  >
-                    Solve Problems
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 ml-1"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M14 5l7 7m0 0l-7 7m7-7H3"
-                      />
-                    </svg>
-                  </a>
-                </div>
-
-                <div className="border border-gray-200 rounded-lg p-4 hover:border-[#2A4A9C] transition-colors">
-                  <h3 className="font-medium text-gray-800 mb-2">
-                    Related Textbooks
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-3">
-                    Find recommended textbooks and reading materials.
-                  </p>
-                  <a
-                    href="#"
-                    className="text-[#2A4A9C] text-sm hover:underline inline-flex items-center"
-                  >
-                    View Books
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 ml-1"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M14 5l7 7m0 0l-7 7m7-7H3"
-                      />
-                    </svg>
-                  </a>
-                </div>
               </div>
             </div>
           </div>

@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-// Question types with their images and descriptions
+// Question types with their Google Drive folder links
 const questionTypes = [
   {
     id: "quiz",
@@ -14,6 +13,8 @@ const questionTypes = [
     textColor: "text-green-800",
     description: "Practice with previous quiz papers from various courses",
     count: 35,
+    driveLink:
+      "https://drive.google.com/drive/folders/1pN0NJCwO5CstJKcrg09EDakawyRBAFsE",
   },
   {
     id: "mid",
@@ -24,6 +25,8 @@ const questionTypes = [
     textColor: "text-orange-800",
     description: "Study with past mid-term examination papers",
     count: 48,
+    driveLink:
+      "https://drive.google.com/drive/folders/1pN0NJCwO5CstJKcrg09EDakawyRBAFsE",
   },
   {
     id: "final",
@@ -34,6 +37,8 @@ const questionTypes = [
     textColor: "text-red-800",
     description: "Prepare for finals with previous year papers",
     count: 42,
+    driveLink:
+      "https://drive.google.com/drive/folders/1pN0NJCwO5CstJKcrg09EDakawyRBAFsE",
   },
   {
     id: "other",
@@ -44,40 +49,16 @@ const questionTypes = [
     textColor: "text-purple-800",
     description: "Additional problem sets and practice questions",
     count: 23,
+    driveLink:
+      "https://drive.google.com/drive/folders/1pN0NJCwO5CstJKcrg09EDakawyRBAFsE",
   },
 ];
 
-// Mock courses for search functionality
-const courses = [
-  "CSE101: Introduction to Programming",
-  "CSE201: Data Structures",
-  "CSE301: Algorithms",
-  "CSE401: Computer Networks",
-  "CSE501: Artificial Intelligence",
-  "MAT101: Calculus I",
-  "MAT201: Linear Algebra",
-  "PHY101: Physics I",
-  "EEE201: Digital Electronics",
-  "ECO101: Microeconomics",
-  "BUS201: Business Management",
-];
-
 const Questions = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filteredCourses, setFilteredCourses] = useState([]);
-  const [showSearchResults, setShowSearchResults] = useState(false);
-
-  useEffect(() => {
-    if (searchTerm.length >= 2) {
-      const results = courses.filter((course) =>
-        course.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setFilteredCourses(results);
-      setShowSearchResults(true);
-    } else {
-      setShowSearchResults(false);
-    }
-  }, [searchTerm]);
+  // Function to handle card click and open Google Drive folder
+  const handleCardClick = (driveLink) => {
+    window.open(driveLink, "_blank");
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -97,85 +78,6 @@ const Questions = () => {
         </div>
       </div>
 
-      {/* Search Section */}
-      <div className="bg-white py-8 border-b border-gray-100">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto relative">
-            <div className="flex items-center bg-gray-50 rounded-xl border border-gray-200 overflow-hidden">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-gray-400 ml-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-              <input
-                type="text"
-                placeholder="Search by course code or name..."
-                className="w-full py-3 px-4 bg-transparent outline-none text-gray-700"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              {searchTerm && (
-                <button
-                  onClick={() => setSearchTerm("")}
-                  className="px-4 text-gray-400 hover:text-gray-600"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              )}
-            </div>
-
-            {/* Search Results Dropdown */}
-            {showSearchResults && (
-              <div className="absolute w-full mt-1 bg-white rounded-xl border border-gray-200 shadow-lg z-10">
-                {filteredCourses.length > 0 ? (
-                  <ul className="py-2">
-                    {filteredCourses.map((course, index) => (
-                      <li key={index} className="px-4 py-2 hover:bg-gray-50">
-                        <Link
-                          to={`/questions/search?q=${encodeURIComponent(
-                            course
-                          )}`}
-                          className="block text-gray-700 hover:text-[#2A4A9C]"
-                          onClick={() => setShowSearchResults(false)}
-                        >
-                          {course}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <div className="px-4 py-3 text-gray-500 text-center">
-                    No courses found matching "{searchTerm}"
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
       {/* Question Types Grid */}
       <div className="bg-gray-50 py-12 flex-grow">
         <div className="container mx-auto px-4">
@@ -185,10 +87,10 @@ const Questions = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {questionTypes.map((type) => (
-              <Link
-                to={`/questions/${type.id}`}
+              <div
                 key={type.id}
-                className={`block rounded-xl shadow-sm border-2 ${type.color} hover:shadow-md transition-all duration-300 hover:translate-y-[-2px]`}
+                onClick={() => handleCardClick(type.driveLink)}
+                className={`block rounded-xl shadow-sm border-2 ${type.color} hover:shadow-md transition-all duration-300 hover:translate-y-[-2px] cursor-pointer`}
               >
                 <div className="p-6">
                   <div className="flex justify-between items-center mb-4">
@@ -230,55 +132,8 @@ const Questions = () => {
                     </span>
                   </div>
                 </div>
-              </Link>
+              </div>
             ))}
-          </div>
-
-          {/* Recent Additions */}
-          <div className="mt-12">
-            <h2 className="text-2xl font-bold text-[#1D2B4C] mb-6 text-center md:text-left">
-              Recently Added Papers
-            </h2>
-
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-              <ul className="divide-y divide-gray-100">
-                {[1, 2, 3, 4, 5].map((item) => (
-                  <li key={item} className="p-4 hover:bg-gray-50">
-                    <Link
-                      to="/questions/final"
-                      className="flex justify-between items-center"
-                    >
-                      <div>
-                        <h3 className="font-medium text-gray-800">
-                          CSE10{item}: Final Exam{" "}
-                          {new Date().getFullYear() - item}
-                        </h3>
-                        <p className="text-sm text-gray-500">
-                          Added {item} day{item !== 1 ? "s" : ""} ago
-                        </p>
-                      </div>
-                      <span className="text-[#2A4A9C] text-sm flex items-center">
-                        View
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-4 w-4 ml-1"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M14 5l7 7m0 0l-7 7m7-7H3"
-                          />
-                        </svg>
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
           </div>
         </div>
       </div>

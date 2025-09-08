@@ -8,6 +8,7 @@ import Layout from "./pages/admin/Layout";
 import Questions from "./pages/Questions";
 import Videos from "./pages/Videos";
 import Lab from "./pages/Lab";
+import CourseCombination from "./pages/CourseCombination";
 
 import Dashboard from "./pages/admin/Dashboard";
 import AddBlog from "./pages/admin/AddBlog";
@@ -24,6 +25,7 @@ const App = () => {
       <Toaster />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/course-combination" element={<CourseCombination />} />
         <Route path="/notes" element={<Notes />} />
         <Route path="/questions" element={<Questions />} />
         <Route path="/videos" element={<Videos />} />
