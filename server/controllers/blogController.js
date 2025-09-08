@@ -141,7 +141,7 @@ export const generateContent = async (req, res) => {
     const { prompt } = req.body;
     const content = await main(
       prompt +
-        "paraphase the writting and structure it in a blog format, the marks distribution in a good manner, then what should be focused on, and what should be avoided."
+        "paraphase the writting and structure it in a blog format, the marks distribution in a good manner, then what should be focused on, and what should be avoided. make it in multiple para but dont use numbers"
     );
     res.json({ success: true, content });
   } catch (error) {
