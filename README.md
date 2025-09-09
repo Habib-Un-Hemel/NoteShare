@@ -1,6 +1,6 @@
 # 📚 NoteShare – Empowering Academic Excellence Through Knowledge Sharing
 
-**Live URL**: [noteshare.com](https://note-share-frontend.vercel.app/)
+**Live URL**: [noteshare.com](https://note-sharebracu.vercel.app/)
 
 ![NoteShare Platform](photo.png)
 
