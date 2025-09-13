@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { assets } from "../assets/assets";
 import { useAppContext } from "../context/AppContext";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const { setInput, input } = useAppContext();
@@ -22,6 +23,31 @@ const Header = () => {
       <div className="absolute top-20 left-[5%] w-24 h-24 rounded-full bg-blue-500 opacity-5"></div>
       <div className="absolute top-40 right-[10%] w-32 h-32 rounded-full bg-orange-500 opacity-5"></div>
       <div className="absolute bottom-10 left-[15%] w-40 h-40 rounded-full bg-green-500 opacity-5"></div>
+
+      {/* Admin Info - Positioned in the top right corner */}
+      <div className="absolute top-4 right-4 z-20">
+        <div className="p-3 bg-white border border-blue-200 rounded-xl shadow-sm text-left max-w-xs">
+          <h3 className="text-xs font-semibold text-gray-700 mb-1">
+            Admin Access
+          </h3>
+          <div className="text-xs bg-gray-50 p-2 rounded-lg">
+            <p className="mb-1">
+              <Link to="/admin" className="text-blue-600 hover:underline">
+                /admin
+              </Link>
+            </p>
+            <p className="mb-1">
+              <span className="font-medium">Email:</span> admin@example.com
+            </p>
+            <p>
+              <span className="font-medium">Password:</span> tiger
+            </p>{" "}
+            <p>
+              <span className="font-medium">For Demo Purposes Only !</span>
+            </p>
+          </div>
+        </div>
+      </div>
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-4xl mx-auto mt-16 mb-12">
@@ -116,8 +142,28 @@ const Header = () => {
             </div>
           </div>
 
+          {/* Stats counters */}
+          <div className="grid grid-cols-2 md:grid-cols-4 max-w-3xl mx-auto gap-4">
+            <div className="text-center p-4 rounded-lg bg-white shadow-sm">
+              <div className="text-3xl font-bold text-[#2A4A9C]">50+</div>
+              <div className="text-gray-600 text-sm">Courses</div>
+            </div>
+            <div className="text-center p-4 rounded-lg bg-white shadow-sm">
+              <div className="text-3xl font-bold text-[#FF8C42]">200+</div>
+              <div className="text-gray-600 text-sm">Students</div>
+            </div>
+            <div className="text-center p-4 rounded-lg bg-white shadow-sm">
+              <div className="text-3xl font-bold text-[#36B37E]">2+</div>
+              <div className="text-gray-600 text-sm">Faculty</div>
+            </div>
+            <div className="text-center p-4 rounded-lg bg-white shadow-sm">
+              <div className="text-3xl font-bold text-purple-600">300+</div>
+              <div className="text-gray-600 text-sm">Resources</div>
+            </div>
+          </div>
+
           {/* Search bar */}
-          <div className="relative max-w-2xl mx-auto">
+          <div className="relative max-w-2xl mt-12 mx-auto">
             <form
               onSubmit={onSubmitHandler}
               className="flex shadow-lg rounded-full overflow-hidden"
@@ -161,108 +207,9 @@ const Header = () => {
             )}
           </div>
         </div>
-
-        {/* Stats counters */}
-        <div className="grid grid-cols-2 md:grid-cols-4 max-w-3xl mx-auto mt-12 gap-4">
-          <div className="text-center p-4 rounded-lg bg-white shadow-sm">
-            <div className="text-3xl font-bold text-[#2A4A9C]">50+</div>
-            <div className="text-gray-600 text-sm">Courses</div>
-          </div>
-          <div className="text-center p-4 rounded-lg bg-white shadow-sm">
-            <div className="text-3xl font-bold text-[#FF8C42]">200+</div>
-            <div className="text-gray-600 text-sm">Students</div>
-          </div>
-          <div className="text-center p-4 rounded-lg bg-white shadow-sm">
-            <div className="text-3xl font-bold text-[#36B37E]">2+</div>
-            <div className="text-gray-600 text-sm">Faculty</div>
-          </div>
-          <div className="text-center p-4 rounded-lg bg-white shadow-sm">
-            <div className="text-3xl font-bold text-purple-600">300+</div>
-            <div className="text-gray-600 text-sm">Resources</div>
-          </div>
-        </div>
       </div>
     </div>
   );
 };
 
 export default Header;
-
-// import React, { useRef } from "react";
-// import { assets } from "../assets/assets";
-// import { useAppContext } from "../context/AppContext";
-// // import onSubmitHandler from "../utils/onSubmitHandler";
-
-// const Header = () => {
-//   const { setInput, input } = useAppContext();
-//   const inputRef = useRef();
-
-//   const onSubmitHandler = (e) => {
-//     e.preventDefault();
-//     setInput(inputRef.current.value);
-//   };
-
-//   const onClear = () => {
-//     setInput("");
-//     inputRef.current.value = "";
-//   };
-//   return (
-//     <div className="mx-8 sm:mx-16 xl:mx-24 relative">
-//       <div className="text-center mt-20 mb-8">
-//         <div className="inline-flex items-center justify-center gap-4 px-6 py-1.5 mb-4 border border-primary/40 bg-primary/10 rounded-full text-sm text-primary">
-//           <p>New: AI features integrated</p>
-//           <img src={assets.star_icon} className="w-2.5"></img>
-//         </div>
-
-//         <h1 className="text-3xl sm:text-6xl font-semibold sm:leading-16 text-gray-700">
-//           My own <span className="text-primary">Notetaking</span> <br></br>{" "}
-//           Platform
-//         </h1>
-
-//         <p className="my-6 sm:my-8 max-2-2xl m-auto max-sm:text-xs text-gray-500">
-//           This project is a collaborative documentation tool built with the MERN
-//           stack, where team members can log project progress, notes, and ideas.
-//           It allows users to create project-specific entries and lets teammates
-//           comment on each other’s updates for real-time collaboration. Ideal for
-//           developers and teams to keep their workflow organized, transparent,
-//           and well-documented.
-//         </p>
-
-//         <form
-//           onSubmit={onSubmitHandler}
-//           className="flex justify-between max-w-lg max-sm:scale-75 mx-auto border border-gray-300 rounded bg-white overflow-hidden "
-//         >
-//           <input
-//             ref={inputRef}
-//             type="text"
-//             placeholder="Search for notes, projects"
-//             required
-//             className="w-full pl-4 outline-none "
-//           ></input>
-//           <button
-//             type="submit"
-//             className="bg-primary text-white px-8 py-2 m-1.5 rounded hover:scale-105 transition-all corsor-pointer"
-//           >
-//             Search
-//           </button>
-//         </form>
-//       </div>
-
-//       <div className="text-center">
-//         {input &&
-//           <button onClick={onClear} className="border font-light text-xs py-1 px-3 rounded-sm shadow-custom-sm cursor-pointer">
-//             Clear Search
-//           </button>
-//         }
-//       </div>
-
-//       <img
-//         src={assets.gradientBackground}
-//         alt=""
-//         className="absolute -top-50 -z-1 opacity-50"
-//       ></img>
-//     </div>
-//   );
-// };
-
-// export default Header;
